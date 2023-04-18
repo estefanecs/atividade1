@@ -1,0 +1,91 @@
+<html>
+<head>
+  <title>My Blog</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script type="application/javascript">  
+
+      let tabela = document.createElement('table');
+      let thead = document.createElement('thead')
+      let tbody = document.createElement('tbody')
+      tabela.setAttribute("id","tabelaMensagens")
+      tabela.appendChild(thead);
+      tabela.appendChild(tbody);
+      let linha = document.createElement("tr");
+      let mensagem= document.createElement("th");
+      let autor = document.createElement("th");
+      let data = document.createElement("th");
+      mensagem.innerHTML = "Mensagem";
+      autor.innerHTML = "Autor";
+      data.innerHTML = "Data";
+      linha.appendChild(mensagem);
+      linha.appendChild(autor);
+      linha.appendChild(data);
+      thead.appendChild(linha);
+
+    function send(event){        
+      data = {
+        "message": document.getElementById("msg").value,
+        "author": document.getElementById("autor").value
+      };      
+      var json_data = JSON.stringify(data);
+      
+      var header = {
+        "Cotent-Type": "application/json"
+      };
+      
+      var url = "https://script.google.com/macros/s/AKfycbzBn3sALe1rYjz7Ze-Ik7q9TEVP0I2V3XX7GNcecWP8NvCzGt4yO_RT1OlQp09TE9cU/exec";
+      
+      fetch(url, {
+        method: "POST",
+        body: json_data,
+        headers: header,
+        mode: "no-cors" 
+      });  
+    }
+
+
+    function reload(event){        
+      document.getElementById('exibicao-tabela').appendChild(tabela);
+      tamanho = document.getElementById("tabelaMensagens").getElementsByTagName("tr").length-1;
+      var url = "https://script.google.com/macros/s/AKfycbzBn3sALe1rYjz7Ze-Ik7q9TEVP0I2V3XX7GNcecWP8NvCzGt4yO_RT1OlQp09TE9cU/exec?tenho="+tamanho; 
+
+      var ajax = new XMLHttpRequest()
+      ajax.open("GET", url, true);
+      ajax.onload = function(){
+        if (ajax.status === 200 ){
+          var jsonObj = JSON.parse(ajax.responseText);//JSON.parse()
+          for (var objeto of jsonObj){
+            let linha = document.createElement("tr");
+            let mensagem = document.createElement("td");
+            let autor = document.createElement("td");
+            let data = document.createElement("td");
+            mensagem.innerHTML = objeto[0];
+            autor.innerHTML = objeto[1];
+            data.innerHTML = objeto[2];
+            linha.appendChild(mensagem);
+            linha.appendChild(autor);
+            linha.appendChild(data);
+            tbody.insertBefore(linha, tbody.firstChild);
+          }
+        }
+      }
+      ajax.send();
+    }
+
+  </script>  
+</head>
+<body>
+  <H1 align="center">Mensagem:</H1>
+  <HR><br>
+  <form>
+       <label>Mensagem:</label>
+       <input type="text" size=64 name="msg" id="msg"><br><br>     
+       <label>Autor:</label> 
+       <input type="text" size=64 name="autor" id="autor">
+       <br><br>
+       <button type="button" onclick="send()">Enviar</button>
+  </form>
+  <button type="button" onclick="reload()">Reload</button>
+  <div id="exibicao-tabela"></div>
+</body>
+</html>
