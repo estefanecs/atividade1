@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Atividade 10</title></head>
+<body>
+
+<h1>Login</h1>
+<form method="post" action="/login">
+<label for="username">Username:</label>
+<input type="text" id="username" name="username" required>
+<br>
+<input type="submit" value="Login">
+</form>
+
+Contador de requisições escondido: {{counter}}
+<br>
+Contador de requisições através de cookies: {{counter_cookie}}
+<br>
+Tempo de login: {{time}}
+<form action="/" method="GET">
+<input type="hidden" name="counter"
+value={{counter}} />
+<input type="submit" value="Enviar" />
+</form>
+
+
+</body>
+</html>
