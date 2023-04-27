@@ -12,9 +12,9 @@ def counter():
 
     if 'username' in session:
         username = session['username']
-        running_time = (datetime.now(timezone.utc) - session.get('_creation_time'))
+        running_time = (datetime.now(timezone.utc).replace(tzinfo=None) - session.get('_creation_time'))
         remaining_time = app.permanent_session_lifetime - running_time
-        tempo = f' '+ str(running_time)+' '
+        tempo = f' '+ str(remaining_time)+' '
     else:
         tempo = "A sessão ainda irá iniciar"
 
@@ -37,8 +37,4 @@ def login():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
-    
-    
-    
     
